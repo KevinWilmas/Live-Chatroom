@@ -7,26 +7,22 @@
   </form>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import useLogin from '../composables/useLogin'
 
-export default {
-  setup() {
-    // refs
-    const email = ref('')
-    const password = ref('')
+// refs
+const email = ref('')
+const password = ref('')
 
-    const { error, login } = useLogin()
+const { error, login } = useLogin()
 
-    const handleSubmit = async () => {
-      await login(email.value, password.value)
-      if (!error.value) {
-        console.log('user logged in')
-      }
-    }
+const emit = defineEmits(['login'])
 
-    return { email, password, handleSubmit, error }
+const handleSubmit = async () => {
+  await login(email.value, password.value)
+  if (!error.value) {
+    emit('login')
   }
 }
 </script>
